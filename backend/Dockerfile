@@ -12,4 +12,4 @@ COPY prisma ./prisma
 COPY src ./src
 RUN npx prisma generate
 EXPOSE 4000
-CMD ["sh", "-c", "npx prisma migrate deploy && node src/server.js"]
+CMD ["sh", "-c", "sleep 10 && npx prisma migrate deploy || true && node src/server.js"]
