@@ -1,6 +1,18 @@
-generator client { provider = "prisma-client-js" }
-datasource db { provider = "postgresql" url = env("DATABASE_URL") }
-model Category { id Int @id @default(autoincrement()) name String @unique @db.VarChar(120) products Product[] }
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique @db.VarChar(120)
+  products Product[]
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   phone     String   @unique @db.VarChar(32)
@@ -8,44 +20,52 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 model Product {
-  id Int @id @default(autoincrement())
-  name String @db.VarChar(180)
-  price Decimal @db.Decimal(10, 2)
-  mrp Decimal @db.Decimal(10, 2)
-  stock Int @default(0)
-  imageUrl String? @db.VarChar(500)
-  categoryId Int
-  category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  orderItems OrderItem[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([categoryId])
-  @@index([stock])
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  price       Decimal  @db.Decimal(10, 2)
+  mrp         Decimal  @db.Decimal(10, 2)
+  stock       Int
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
-enum OrderStatus { PENDING CONFIRMED PACKED OUT_FOR_DELIVERY DELIVERED CANCELLED }
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PACKED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
 model Order {
-  id             Int          @id @default(autoincrement())
-  idempotencyKey String?      @unique @db.VarChar(255)
-  totalAmount    Decimal      @db.Decimal(10, 2)
-  status         OrderStatus  @default(PENDING)
-  userId         Int?
-  user           User?        @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  items          OrderItem[]
+  id             Int         @id @default(autoincrement())
+  idempotencyKey String?     @unique @db.VarChar(255)
+  totalAmount    Decimal     @db.Decimal(10, 2)
+  status         OrderStatus @default(PENDING)
+
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  items      OrderItem[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
   @@index([userId])
-  @@index([status])
-  @@index([createdAt])
 }
+
 model OrderItem {
-  id Int @id @default(autoincrement())
-  orderId Int
+  id        Int     @id @default(autoincrement())
+  orderId   Int
   productId Int
-  quantity Int
-  price Decimal @db.Decimal(10, 2)
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  product Product @relation(fields: [productId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  @@unique([orderId, productId])
-  @@index([productId])
+
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 }
