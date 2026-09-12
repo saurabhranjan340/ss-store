@@ -15,8 +15,13 @@ model Category {
 
 model User {
   id        Int      @id @default(autoincrement())
-  phone     String   @unique @db.VarChar(32)
+  name      String   @db.VarChar(120)
+  email     String   @unique @db.VarChar(120)
+  password  String
+  phone     String?  @db.VarChar(32)
+
   orders    Order[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -28,8 +33,9 @@ model Product {
   mrp         Decimal  @db.Decimal(10, 2)
   stock       Int
   categoryId  Int
-  category    Category    @relation(fields: [categoryId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
   orderItems  OrderItem[]
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
