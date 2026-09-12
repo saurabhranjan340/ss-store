@@ -1,9 +1,19 @@
-# Frontend deployment notes
+# SS Store auth frontend
 
-Set this Vercel environment variable for Preview and Production:
+Vanilla HTML, CSS, and JavaScript pages for customer login and signup.
 
-```env
-NEXT_PUBLIC_API_URL=https://<deployed-backend-domain>/api
+- Login: `POST /api/auth/login`
+- Signup: `POST /api/auth/register`
+- Token storage: `localStorage.setItem("token", token)`
+- Successful authentication redirects to `index.html`.
+- Existing tokens redirect away from auth pages.
+- Validation covers email format, phone, password length, required fields, and confirmation matching.
+- Requests have timeout, network, malformed-response, and API-error handling.
+
+Run with a static server so browser module/security behavior is predictable:
+
+```bash
+python3 -m http.server 8080
 ```
 
-The current ClickUp artifact contains the working frontend source and uses this variable in `src/lib/api.js`. For a standard Vercel deployment, place that source in the real Next.js repository's `/frontend` root and confirm the repository has its normal `package.json`, `app/`, and build script. This sandbox artifact is a React preview, not a substitute for a checked-in Next.js repository.
+Then open `http://localhost:8080/login.html`.

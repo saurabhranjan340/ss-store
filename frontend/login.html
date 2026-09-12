@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Log in to SS Store">
+  <title>SS Store · Log in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-auth-page="login">
+  <main class="auth-page">
+    <section class="auth-card" aria-labelledby="login-title">
+      <a class="brand" href="index.html" aria-label="SS Store home">
+        <span class="brand-mark">SS</span>
+        <span><strong>SS Store</strong><small>fresh in a flash</small></span>
+      </a>
+      <div class="auth-heading">
+        <p class="eyebrow">Welcome back</p>
+        <h1 id="login-title">Your everyday shelf is waiting.</h1>
+        <p>Log in to reorder essentials in a few taps.</p>
+      </div>
+      <div id="auth-feedback" class="feedback" role="alert" aria-live="polite" hidden></div>
+      <form id="login-form" novalidate>
+        <label class="field-label" for="email">Email</label>
+        <input class="field" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        <small class="field-error" data-error-for="email"></small>
+        <label class="field-label" for="password">Password</label>
+        <div class="password-wrap">
+          <input class="field" id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+          <button class="password-toggle" type="button" data-toggle-password="password" aria-label="Show password">Show</button>
+        </div>
+        <small class="field-error" data-error-for="password"></small>
+        <button class="primary-button" id="login-button" type="submit"><span class="button-label">Log in</span></button>
+      </form>
+      <p class="auth-switch">New to SS Store? <a href="signup.html">Create an account</a></p>
+    </section>
+    <p class="auth-footnote">Fast groceries, simple checkout.</p>
+  </main>
+  <script src="js/auth.js" defer></script>
+</body>
+</html>
